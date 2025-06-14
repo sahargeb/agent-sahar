@@ -1,61 +1,76 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, MessageCircle, TrendingUp, AlertCircle, CheckCircle, Lightbulb } from "lucide-react";
+import { Brain, MessageCircle, AlertCircle, Lightbulb, ClipboardList, Sparkles } from "lucide-react";
 
 export const AIAssistant = () => {
   const [messages, setMessages] = useState([
     {
       type: 'ai',
-      content: 'مرحباً! أنا مساعدك الذكي للضرائب. كيف يمكنني مساعدتك اليوم؟',
+      content: 'مرحباً بك في باقة موفق! أنا مساعدك الذكي لتيسير رحلتك الضريبية. إليك أهم المهام التي يجب التركيز عليها اليوم.',
       time: '10:30 ص'
     }
   ]);
   
-  const [currentInsight, setCurrentInsight] = useState(0);
+  const priorityStyles = {
+    urgent: {
+      border: 'border-red-500',
+      bg: 'bg-red-50',
+      text: 'text-red-600',
+      button: 'bg-red-600 hover:bg-red-700',
+      badge: 'border-red-500 text-red-700 bg-red-100',
+    },
+    opportunity: {
+      border: 'border-green-500',
+      bg: 'bg-green-50',
+      text: 'text-green-600',
+      button: 'bg-green-600 hover:bg-green-700',
+      badge: 'border-green-500 text-green-700 bg-green-100',
+    },
+    recommendation: {
+      border: 'border-blue-500',
+      bg: 'bg-blue-50',
+      text: 'text-blue-600',
+      button: 'bg-blue-600 hover:bg-blue-700',
+      badge: 'border-blue-500 text-blue-700 bg-blue-100',
+    },
+  };
 
-  const insights = [
+  const proactiveTasks = [
     {
-      type: 'warning',
       icon: AlertCircle,
-      title: 'تنبيه ضريبي',
-      message: 'موعد تقديم إقرار ضريبة القيمة المضافة خلال 5 أيام',
-      action: 'إعداد الإقرار',
-      color: 'orange'
+      title: "تقديم إقرار ضريبة القيمة المضافة",
+      dueDate: "يستحق خلال 5 أيام",
+      description: "الإقرار الضريبي للربع الثاني على وشك الانتهاء. قم بإعداده الآن لتجنب الغرامات.",
+      action: "البدء في الإعداد",
+      priority: 'urgent',
     },
     {
-      type: 'success',
-      icon: CheckCircle,
-      title: 'توفير محتمل',
-      message: 'يمكن توفير 3,200 درهم عبر تطبيق خصم التسديد المبكر',
-      action: 'تطبيق الخصم',
-      color: 'green'
+      icon: Sparkles,
+      title: "فرصة توفير: استرداد ضريبي",
+      dueDate: "فرصة متاحة",
+      description: "تم تحديد مصروفات مؤهلة بقيمة 12,500 درهم يمكن استردادها.",
+      action: "تقديم طلب الاسترداد",
+      priority: 'opportunity',
     },
     {
-      type: 'tip',
       icon: Lightbulb,
-      title: 'نصيحة ذكية',
-      message: 'تحديث نظام ERP الخاص بك سيحسن دقة التقارير بنسبة 25%',
-      action: 'معرفة المزيد',
-      color: 'blue'
+      title: "توصية: تحديث ملف الشركة",
+      dueDate: "توصية",
+      description: "نظامنا يقترح تحديث بيانات النشاط التجاري لضمان التصنيف الضريبي الصحيح.",
+      action: "مراجعة الملف",
+      priority: 'recommendation',
     }
   ];
 
   const quickActions = [
-    'حساب ضريبة القيمة المضافة',
-    'مواعيد الإقرارات القادمة',
-    'تحليل المخاطر الضريبية',
-    'توقعات الدفعات'
+    'ما هو الأثر الضريبي لتوظيف 5 موظفين جدد؟',
+    'حلل لي آخر إقرار ضريبي قدمته',
+    'كيف يمكنني تحسين كفاءتي الضريبية؟',
+    'اشرح لي ضريبة الشركات بالتفصيل'
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentInsight((prev) => (prev + 1) % insights.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   const sendMessage = (message: string) => {
     setMessages(prev => [...prev, 
@@ -69,25 +84,60 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Proactive Tasks - The core of Baqat Mofaq */}
+      <Card className="lg:col-span-2">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <ClipboardList className="h-8 w-8 text-blue-600" />
+            باقة موفق: قائمة مهامك الذكية
+          </CardTitle>
+          <CardDescription>
+            مهام وتوصيات استباقية تم إنشاؤها بواسطة الذكاء الاصطناعي لضمان امتثالك وتوفيرك.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {proactiveTasks.map((task, index) => {
+            const styles = priorityStyles[task.priority as keyof typeof priorityStyles];
+            return (
+              <div key={index} className={`p-4 rounded-lg border-l-4 ${styles.border} ${styles.bg} flex items-start gap-4`}>
+                <task.icon className={`h-8 w-8 mt-1 shrink-0 ${styles.text}`} />
+                <div className="flex-1">
+                  <div className="flex justify-between items-center flex-wrap gap-2">
+                    <h4 className="font-bold text-gray-800">{task.title}</h4>
+                    <Badge variant={task.priority === 'urgent' ? 'destructive' : 'outline'} className={styles.badge}>
+                      {task.dueDate}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1 mb-3">{task.description}</p>
+                  <Button size="sm" className={styles.button}>
+                    {task.action}
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+
       {/* AI Chat Interface */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-6 w-6 text-purple-600" />
-            المساعد الذكي للضرائب
+            مساعدك الذكي
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 flex flex-col h-[calc(100%-4rem)]">
           {/* Chat Messages */}
-          <div className="h-64 overflow-y-auto bg-gray-50 rounded-lg p-4 space-y-3">
+          <div className="flex-1 overflow-y-auto bg-gray-50 rounded-lg p-4 space-y-3">
             {messages.map((message, index) => (
               <div
                 key={index}
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
+                  className={`max-w-[85%] p-3 rounded-lg ${
                     message.type === 'user'
                       ? 'bg-blue-600 text-white'
                       : 'bg-white border shadow-sm'
@@ -106,93 +156,19 @@ export const AIAssistant = () => {
 
           {/* Quick Actions */}
           <div>
-            <h5 className="font-semibold mb-2 text-sm">إجراءات سريعة</h5>
-            <div className="grid grid-cols-2 gap-2">
+            <h5 className="font-semibold mb-2 text-sm">جرّب أن تسأل:</h5>
+            <div className="space-y-2">
               {quickActions.map((action, index) => (
                 <Button
                   key={index}
                   variant="outline"
                   size="sm"
                   onClick={() => sendMessage(action)}
-                  className="text-xs h-auto py-2 px-3 justify-start"
+                  className="text-xs h-auto w-full py-2 px-3 justify-start text-left"
                 >
                   {action}
                 </Button>
               ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* AI Insights */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-emerald-600" />
-            رؤى ذكية في الوقت الفعلي
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Current Insight */}
-          <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border">
-            <div className="flex items-start gap-3">
-              {React.createElement(insights[currentInsight].icon, {
-                className: `h-6 w-6 text-${insights[currentInsight].color}-600`
-              })}
-              <div className="flex-1">
-                <h4 className="font-semibold text-sm mb-1">
-                  {insights[currentInsight].title}
-                </h4>
-                <p className="text-sm text-gray-700 mb-3">
-                  {insights[currentInsight].message}
-                </p>
-                <Button size="sm" className={`bg-${insights[currentInsight].color}-600`}>
-                  {insights[currentInsight].action}
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Analytics Summary */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-3 bg-emerald-50 rounded-lg text-center">
-              <div className="text-lg font-bold text-emerald-600">94%</div>
-              <div className="text-xs text-gray-600">دقة التنبؤات</div>
-            </div>
-            <div className="p-3 bg-blue-50 rounded-lg text-center">
-              <div className="text-lg font-bold text-blue-600">2.1M</div>
-              <div className="text-xs text-gray-600">درهم محفوظ</div>
-            </div>
-            <div className="p-3 bg-purple-50 rounded-lg text-center">
-              <div className="text-lg font-bold text-purple-600">156</div>
-              <div className="text-xs text-gray-600">خطأ تم تجنبه</div>
-            </div>
-            <div className="p-3 bg-yellow-50 rounded-lg text-center">
-              <div className="text-lg font-bold text-yellow-600">87%</div>
-              <div className="text-xs text-gray-600">تحسين الكفاءة</div>
-            </div>
-          </div>
-
-          {/* AI Features */}
-          <div className="space-y-3">
-            <h5 className="font-semibold text-sm">قدرات الذكاء الاصطناعي</h5>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>تحليل البيانات في الوقت الفعلي</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>كشف الأخطاء والمخاطر</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>توقع الالتزامات المستقبلية</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>اقتراح التحسينات</span>
-              </div>
             </div>
           </div>
         </CardContent>
