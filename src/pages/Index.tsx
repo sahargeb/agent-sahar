@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DigitalIdentity } from "@/components/DigitalIdentity";
 import { SmartPayment } from "@/components/SmartPayment";
-import { Tax01Platform } from "@/components/Tax01Platform";
+import { TaxComplianceGame } from "@/components/TaxComplianceGame";
 import { TaxPyramid } from "@/components/TaxPyramid";
 import { AIAssistant } from "@/components/AIAssistant";
 import { 
@@ -39,11 +39,11 @@ const Index = () => {
       color: "from-blue-500 to-purple-500"
     },
     {
-      id: "tax01-platform",
-      title: "منصة Tax01 التعليمية",
-      description: "منصة تفاعلية لتعليم وتثقيف المكلفين بالضرائب",
+      id: "tax-compliance-game",
+      title: "رحلة الامتثال الضريبي",
+      description: "لعبة تفاعلية لزيادة الوعي وتقليل الغرامات الضريبية",
       icon: GraduationCap,
-      component: Tax01Platform,
+      component: TaxComplianceGame,
       color: "from-purple-500 to-pink-500"
     },
     {
