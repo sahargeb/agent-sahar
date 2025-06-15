@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { DigitalIdentity } from "@/components/DigitalIdentity";
 import { SmartPayment } from "@/components/SmartPayment";
 import { Tax01Platform } from "@/components/Tax01Platform";
@@ -110,52 +108,40 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          {demos.map((demo) => (
-            <Button
-              key={demo.id}
-              variant={activeDemo === demo.id ? "default" : "outline"}
-              onClick={() => setActiveDemo(demo.id)}
-              className={`flex items-center gap-2 ${
-                activeDemo === demo.id 
-                ? `bg-gradient-to-r ${demo.color} text-white` 
-                : 'hover:bg-gray-50'
-              }`}
-            >
-              <demo.icon className="h-5 w-5" />
-              {demo.title}
-            </Button>
-          ))}
-        </div>
-
-        {/* Active Demo */}
-        <div className="mb-12">
-          <ActiveComponent />
-        </div>
-
-        {/* Features Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {demos.map((demo) => (
-            <Card 
-              key={demo.id} 
-              className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                activeDemo === demo.id ? 'ring-2 ring-blue-500' : ''
-              }`}
-              onClick={() => setActiveDemo(demo.id)}
-            >
+        {/* Demos Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
+          <div className="lg:col-span-1">
+            <Card className="sticky top-24">
               <CardHeader>
-                <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${demo.color} flex items-center justify-center mb-4`}>
-                  <demo.icon className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-lg">{demo.title}</CardTitle>
+                <CardTitle className="text-xl">المشاريع المبتكرة</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 text-sm">{demo.description}</p>
+              <CardContent className="p-3">
+                <div className="space-y-1">
+                  {demos.map((demo) => (
+                    <Button
+                      key={demo.id}
+                      variant={activeDemo === demo.id ? "secondary" : "ghost"}
+                      onClick={() => setActiveDemo(demo.id)}
+                      className="w-full h-auto justify-start p-3 gap-3"
+                    >
+                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-gradient-to-r ${demo.color}`}>
+                          <demo.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <span className="font-semibold text-sm text-wrap text-start">{demo.title}</span>
+                    </Button>
+                  ))}
+                </div>
               </CardContent>
             </Card>
-          ))}
+          </div>
+          
+          <div className="lg:col-span-3" key={activeDemo}>
+            <div className="animate-fade-in">
+              <ActiveComponent />
+            </div>
+          </div>
         </div>
+
 
         {/* Additional Platform */}
         <Card className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
